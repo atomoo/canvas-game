@@ -5,13 +5,13 @@ export default class Player {
         this.width = attibute.width
         this.height = attibute.height
         this.speedX = 2
-        this.speedY = 0
+        this.speedY = 2
         this.game = game
     }
 
     jump() {
         // 跳跃
-        this.y += this.speedY
+        this.y -= this.speedY
     }
 
     move() {
@@ -25,12 +25,15 @@ export default class Player {
     }
 
     render() {
-        this.game.context.translate(this.x, this.y)
-        this.game.context.strokeRect(
+        const { context: c } = this.game
+        c.save()
+        c.translate(this.x, this.y)
+        c.strokeRect(
             0,
             0,
             this.width,
             this.height
         )
+        c.restore()
     }
 }

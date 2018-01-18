@@ -10,6 +10,20 @@ function main() {
         height: 20
     })
     game.start(player)
+    document.querySelector('#pause').addEventListener('click', () => {
+        game.pause()
+    })
+    document.querySelector('#continue').addEventListener('click', () => {
+        game.continue()
+    })
+    document.querySelector('#jump').addEventListener('click', () => {
+        player.jump()
+    })
+    document.addEventListener('keydown', (e) => {
+        if (e.key === ' ') {
+            player.jump()
+        }
+    })
 }
 
 main()

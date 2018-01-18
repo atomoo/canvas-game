@@ -6,8 +6,18 @@ export default class Game {
 
     start(player) {
         this.id = window.requestAnimationFrame(() => this.start(player))
-        this.render(player)
-        player.move()
+        if (this.status !== 'pause') {
+            this.render(player)
+            player.move()
+        }
+    }
+
+    pause() {
+        this.status = 'pause'
+    }
+
+    continue() {
+        this.status = 'running'
     }
 
     render(player) {
@@ -17,8 +27,6 @@ export default class Game {
         context.moveTo(0, 450)
         context.lineTo(canvas.width, 450)
         context.stroke()
-        context.save()
         player.render()
-        context.restore()
     }
 }
