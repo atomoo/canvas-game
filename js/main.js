@@ -16,14 +16,6 @@ function main() {
     document.querySelector('#continue').addEventListener('click', () => {
         game.continue()
     })
-    document.querySelector('#jump').addEventListener('click', () => {
-        player.jump()
-    })
-    document.addEventListener('keydown', (e) => {
-        if (e.key === ' ') {
-            player.jump()
-        }
-    })
 }
 
 main()

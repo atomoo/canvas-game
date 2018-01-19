@@ -7,21 +7,27 @@ export default class Player {
         this.speedX = 2
         this.speedY = 2
         this.game = game
+        this.status = 'walking'
+        game.registerAction('Space', () => {
+            this.jump()
+        })
     }
 
     jump() {
         // 跳跃
-        this.y -= this.speedY
+        this.status = 'jumping'
     }
 
     move() {
-        if (this.x >= this.game.canvas.width - this.width) {
-            this.speedX *= -1
+        const p = this
+        const g = this.game
+        if (p.x >= g.canvas.width - p.width) {
+            p.speedX *= -1
         }
-        if (this.x < 0) {
-            this.speedX *= -1
+        if (p.x < 0) {
+            p.speedX *= -1
         }
-        this.x += this.speedX
+        p.x += p.speedX
     }
 
     render() {

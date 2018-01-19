@@ -1,7 +1,19 @@
+import log from './utils'
+
 export default class Game {
     constructor(selector) {
         this.canvas = document.querySelector(selector)
         this.context = this.canvas.getContext('2d')
+        this.actions = []
+        document.addEventListener('keydown', (e) => {
+            if (this.actions[e.code]) {
+                this.actions[e.code]()
+            }
+        })
+    }
+
+    registerAction(code, callback) {
+        this.actions[code] = callback
     }
 
     start(player) {
