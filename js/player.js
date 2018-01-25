@@ -5,7 +5,7 @@ export default class Player {
         this.width = attibute.width
         this.height = attibute.height
         this.speedX = 2
-        this.speedY = 2
+        this.speedY = 3
         this.game = game
         this.status = 'walking'
         game.registerAction('Space', () => {
@@ -19,15 +19,31 @@ export default class Player {
     }
 
     move() {
+        this.moveX()
+        if (this.status === 'jumping') {
+            this.moveY()
+        }
+        if (this.status === 'jumping' && this.y >= 450 - this.width) {
+            this.y = 450 - this.width
+            this.status = 'sliding'
+        }
+    }
+
+    moveX() {
         const p = this
         const g = this.game
-        if (p.x >= g.canvas.width - p.width) {
-            p.speedX *= -1
-        }
-        if (p.x < 0) {
+        if (p.x >= g.canvas.width - p.width || p.x < 0) {
             p.speedX *= -1
         }
         p.x += p.speedX
+    }
+
+    moveY() {
+        const p = this
+        if (p.y >= 450 - p.width || p.y <= 350) {
+            p.speedY *= -1
+        }
+        p.y -= p.speedY
     }
 
     render() {
