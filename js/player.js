@@ -7,7 +7,7 @@ export default class Player {
         this.speedX = 2
         this.speedY = 3
         this.game = game
-        this.status = 'walking'
+        this.status = 'sliding'
         game.registerAction('Space', () => {
             this.jump()
         })
