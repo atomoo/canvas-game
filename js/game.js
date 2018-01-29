@@ -1,4 +1,5 @@
 import log from './utils'
+import Player from './player'
 
 export default class Game {
     constructor(selector) {
@@ -16,8 +17,18 @@ export default class Game {
         this.actions[code] = callback
     }
 
-    start(player) {
-        this.id = window.requestAnimationFrame(() => this.start(player))
+    start() {
+        const player = new Player(this, {
+            x: 0,
+            y: 439,
+            width: 20,
+            height: 20
+        })
+        this.run(player)
+    }
+
+    run(player) {
+        this.id = window.requestAnimationFrame(() => this.run(player))
         if (this.status !== 'pause') {
             this.render(player)
             player.move()
