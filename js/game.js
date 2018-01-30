@@ -40,10 +40,10 @@ export default class Game {
 
     toggle() {
         if (this.status === 'pause') {
-            this.status = 'running'
+            this.continueGame()
         }
         else if (this.status === 'running') {
-            this.status = 'pause'
+            this.pause()
         }
     }
 
@@ -51,7 +51,7 @@ export default class Game {
         this.status = 'pause'
     }
 
-    continue() {
+    continueGame() {
         this.status = 'running'
     }
 
