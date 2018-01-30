@@ -1,5 +1,10 @@
 import log from './utils'
 
+const GAME_STATUS = {
+    RUNNING: 'running',
+    PAUSE: 'pause'
+}
+
 export default class Game {
     constructor(selector) {
         this.canvas = document.querySelector(selector)
@@ -25,13 +30,13 @@ export default class Game {
     }
 
     start() {
-        this.status = 'running'
+        this.status = GAME_STATUS.RUNNING
         this.run()
     }
 
     run() {
         this.id = window.requestAnimationFrame(() => this.run())
-        if (this.status !== 'pause') {
+        if (this.status !== GAME_STATUS.PAUSE) {
             this.player.update()
             this.obstacle.update()
             this.render()
@@ -39,20 +44,20 @@ export default class Game {
     }
 
     toggle() {
-        if (this.status === 'pause') {
+        if (this.status === GAME_STATUS.PAUSE) {
             this.continueGame()
         }
-        else if (this.status === 'running') {
+        else if (this.status === GAME_STATUS.RUNNING) {
             this.pause()
         }
     }
 
     pause() {
-        this.status = 'pause'
+        this.status = GAME_STATUS.PAUSE
     }
 
     continueGame() {
-        this.status = 'running'
+        this.status = GAME_STATUS.RUNNING
     }
 
     render() {
