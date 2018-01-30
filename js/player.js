@@ -6,52 +6,58 @@ export default class Player {
         this.width = attibute.width
         this.height = attibute.height
         this.angle = 0
-        this.speedX = 2
-        this.speedY = 3
-        this.speedAngle = 60 * Math.PI / 180
+        this.speedY = 0
+        this.speedAngle = 15 * Math.PI / 180
         this.game = game
+        this.maxY = this.positionY - 100
+        this.speedVelocity = 1
         this.status = 'sliding'
         game.registerAction('Space', () => {
             this.jump()
         })
     }
 
-    isAtLine() {
+    isCollideWithLine() {
         return this.y > this.positionY
+    }
+
+    isCollideWithMaxHeight() {
+        return this.y <= this.maxY
     }
 
     jump() {
         // 跳跃
-        this.status = 'jumping'
-    }
-
-    move() {
-        this.moveX()
-        if (this.status === 'jumping') {
-            this.moveY()
-            this.rotate()
-            if (this.y > this.positionY) {
-                this.y = this.positionY
-                this.angle = 0
-                this.status = 'sliding'
-            }
+        if (!this.isJumping()) {
+            this.status = 'jumping'
+            this.speedY = -20
         }
     }
 
-    moveX() {
-        const p = this
-        const g = this.game
-        p.x += p.speedX
-        if (p.x >= g.canvas.width - p.width || p.x < 0) {
-            p.speedX *= -1
-            this.speedAngle *= -1
+    isJumping() {
+        return this.status === 'jumping'
+    }
+
+    revertSpeed() {
+        this.y = this.positionY
+        this.angle = 0
+        this.status = 'sliding'
+    }
+
+    update() {
+        if (this.status === 'jumping') {
+            this.moveY()
+            this.rotate()
+            if (this.isCollideWithLine()) {
+                this.revertSpeed()
+            }
         }
     }
 
     moveY() {
         const p = this
-        p.y -= p.speedY
-        if (p.y > p.positionY || p.y <= this.positionY - 100) {
+        p.y += p.speedY
+        p.speedY += p.speedVelocity
+        if (p.isCollideWithLine()) {
             p.speedY *= -1
         }
     }

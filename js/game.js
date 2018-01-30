@@ -1,5 +1,4 @@
 import log from './utils'
-import Player from './player'
 
 export default class Game {
     constructor(selector) {
@@ -17,21 +16,34 @@ export default class Game {
         this.actions[code] = callback
     }
 
-    start() {
-        const player = new Player(this, {
-            x: 0,
-            y: 439,
-            width: 20,
-            height: 20
-        })
-        this.run(player)
+    addPlayer(player) {
+        this.player = player
     }
 
-    run(player) {
-        this.id = window.requestAnimationFrame(() => this.run(player))
+    addObstacle(obstacle) {
+        this.obstacle = obstacle
+    }
+
+    start() {
+        this.status = 'running'
+        this.run()
+    }
+
+    run() {
+        this.id = window.requestAnimationFrame(() => this.run())
         if (this.status !== 'pause') {
-            this.render(player)
-            player.move()
+            this.player.update()
+            this.obstacle.update()
+            this.render()
+        }
+    }
+
+    toggle() {
+        if (this.status === 'pause') {
+            this.status = 'running'
+        }
+        else if (this.status === 'running') {
+            this.status = 'pause'
         }
     }
 
@@ -43,13 +55,14 @@ export default class Game {
         this.status = 'running'
     }
 
-    render(player) {
+    render() {
         const { canvas, context } = this
         context.clearRect(0, 0, canvas.width, canvas.height)
         context.beginPath()
         context.moveTo(0, 450)
         context.lineTo(canvas.width, 450)
         context.stroke()
-        player.render()
+        this.player.render()
+        this.obstacle.render()
     }
 }
