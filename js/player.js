@@ -1,3 +1,5 @@
+import { PLAYER_STATUS } from './constant'
+
 export default class Player {
     constructor(game, attibute) {
         this.x = attibute.x
@@ -11,7 +13,7 @@ export default class Player {
         this.game = game
         this.maxY = this.positionY - 100
         this.speedVelocity = 1
-        this.status = 'sliding'
+        this.status = PLAYER_STATUS.SLIDING
         game.registerAction('Space', () => {
             this.jump()
         })
@@ -25,26 +27,35 @@ export default class Player {
         return this.y <= this.maxY
     }
 
+    isCollideWithObstacle(obstacle) {
+        // TODO: 碰撞
+        const { x: playerX, width } = this.x
+        const playerRightX = playerX + width
+        const obstacleRightX = obstacle.x + obstacle.width
+        return (playerRightX > obstacle.x && playerRightX < obstacleRightX)
+            || (playerX > obstacle.x && playerX < obstacleRightX)
+    }
+
     jump() {
         // 跳跃
         if (!this.isJumping()) {
-            this.status = 'jumping'
-            this.speedY = -20
+            this.status = PLAYER_STATUS.JUMPING
+            this.speedY = -15
         }
     }
 
     isJumping() {
-        return this.status === 'jumping'
+        return this.status === PLAYER_STATUS.JUMPING
     }
 
     revertSpeed() {
         this.y = this.positionY
         this.angle = 0
-        this.status = 'sliding'
+        this.status = PLAYER_STATUS.SLIDING
     }
 
     update() {
-        if (this.status === 'jumping') {
+        if (this.status === PLAYER_STATUS.JUMPING) {
             this.moveY()
             this.rotate()
             if (this.isCollideWithLine()) {
@@ -69,7 +80,7 @@ export default class Player {
     render() {
         const { context: c } = this.game
         c.save()
-        c.translate(this.x, this.y)
+        c.translate(this.x + this.width / 2, this.y + this.height / 2)
         c.rotate(this.angle)
         c.strokeRect(
             this.width / -2,

@@ -1,5 +1,3 @@
-import { drawTriangleInCanvasContext } from './utils'
-
 export default class Obstacle {
     constructor(game, attibute) {
         this.game = game
@@ -10,12 +8,20 @@ export default class Obstacle {
         this.speedX = 2
     }
 
+    isDead() {
+        return this.x < 0
+    }
+
+    isInGame() {
+        return this.x > 0 && this.x < this.game.canvas.width
+    }
+
     update() {
         this.x -= this.speedX
     }
 
     render() {
-        if (this.x > 0) {
+        if (this.isInGame()) {
             const { context: c } = this.game
             c.save()
             c.beginPath()

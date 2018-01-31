@@ -22,6 +22,7 @@
                 "allowSamePrecedence": true
             }
         ],
+        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
         "prefer-destructuring": ["error", {
             "array": false,
             "object": true
