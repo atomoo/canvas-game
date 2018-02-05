@@ -1,6 +1,5 @@
-import Game from './game'
-import Player from './player'
-import Obstacle from './obstacle'
+import Game from './game/game'
+import Player from './obj/player'
 
 function main() {
     const game = new Game('#canvas')
@@ -11,12 +10,6 @@ function main() {
         height: 20
     }))
     game.start()
-    const btn = document.querySelector('#toggle')
-    btn.addEventListener('click', () => {
-        // = = !
-        btn.innerText = game.status.replace('ning', '')
-        game.toggle()
-    })
 }
 
 main()

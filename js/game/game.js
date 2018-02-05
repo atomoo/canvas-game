@@ -1,6 +1,6 @@
-import { log, random } from './utils'
-import Obstacle from './obstacle'
-import { GAME_STATUS } from './constant'
+import { log, random } from '../utils/utils'
+import Obstacle from '../obj/obstacle'
+import { GAME_STATUS } from '../constant/constant'
 
 export default class Game {
     constructor(selector) {
@@ -68,10 +68,17 @@ export default class Game {
         for (let i = 0; i < obstacles.length; i++) {
             obstacles[i].update()
         }
-        // const o = obstacles[0]
-        // if (o.x + o.width < p.x && !p.isCollideWithObstacle(o)) {
-        //     this.score += 1
-        // }
+        const o = obstacles[0]
+        if (p.isCollideWithObstacle(o)) {
+            this.over()
+        }
+        else {
+            this.score += 1
+        }
+    }
+
+    over() {
+        this.status = GAME_STATUS.DEAD
     }
 
     toggle() {
@@ -104,15 +111,31 @@ export default class Game {
         }
     }
 
+    renderScore() {
+        const { context: c } = this
+        c.font = '24px serif'
+        c.fillText(`distance: ${this.score}`, 600, 50)
+    }
+
+    renderGameOver() {
+        const { context: c } = this
+        c.font = '30px serif'
+        c.fillText('Game Over ! ', this.canvas.width / 2, this.canvas.height / 2)
+    }
+
     render() {
         const { canvas, context } = this
         context.clearRect(0, 0, canvas.width, canvas.height)
+        context.textBaseline = 'middle'
+        context.textAlign = 'center'
+        this.renderScore()
+        if (this.status === GAME_STATUS.DEAD) {
+            this.renderGameOver()
+        }
         context.beginPath()
         context.moveTo(0, 450)
         context.lineTo(canvas.width, 450)
         context.stroke()
-        context.font = '24px serif'
-        context.fillText(this.score, 650, 50)
         this.player.render()
         this.renderObstacles()
     }

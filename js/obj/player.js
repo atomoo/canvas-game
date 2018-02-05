@@ -1,12 +1,14 @@
-import { PLAYER_STATUS } from './constant'
+import { PLAYER_STATUS } from '../constant/constant'
+import Point from '../shape/point'
+import Polygon from '../shape/polygon'
 
 export default class Player {
-    constructor(game, attibute) {
-        this.x = attibute.x
-        this.y = attibute.y
-        this.positionY = attibute.y
-        this.width = attibute.width
-        this.height = attibute.height
+    constructor(game, attribute) {
+        this.x = attribute.x
+        this.y = attribute.y
+        this.positionY = attribute.y
+        this.width = attribute.width
+        this.height = attribute.height
         this.angle = 0
         this.speedY = 0
         this.speedAngle = 15 * Math.PI / 180
@@ -29,11 +31,16 @@ export default class Player {
 
     isCollideWithObstacle(obstacle) {
         // TODO: 碰撞
-        const { x: playerX, width } = this.x
-        const playerRightX = playerX + width
-        const obstacleRightX = obstacle.x + obstacle.width
-        return (playerRightX > obstacle.x && playerRightX < obstacleRightX)
-            || (playerX > obstacle.x && playerX < obstacleRightX)
+        return this.getPolygon().isCollideWithOther(obstacle.getPolygon())
+    }
+
+    getPolygon() {
+        return new Polygon([
+            new Point(this.x, this.y),
+            new Point(this.x, this.y + this.height),
+            new Point(this.x + this.width, this.y + this.height),
+            new Point(this.x + this.width, this.y)
+        ])
     }
 
     jump() {
