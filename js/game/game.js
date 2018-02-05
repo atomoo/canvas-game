@@ -69,7 +69,7 @@ export default class Game {
             obstacles[i].update()
         }
         const o = obstacles[0]
-        if (p.isCollideWithObstacle(o)) {
+        if (p.x + Math.sqrt(p.width ** 2 + p.height ** 2) >= o.x && p.isCollideWithObstacle(o)) {
             this.over()
         }
         else {
