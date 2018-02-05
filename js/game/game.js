@@ -11,13 +11,20 @@ export default class Game {
         this.score = 0
         document.addEventListener('keydown', (e) => {
             if (this.actions[e.code]) {
-                this.actions[e.code]()
+                this.actions[e.code].forEach((cb) => {
+                    cb()
+                })
             }
         })
     }
 
     registerAction(code, callback) {
-        this.actions[code] = callback
+        if (this.actions[code]) {
+            this.actions[code].push(callback)
+        }
+        else {
+            this.actions[code] = [callback]
+        }
     }
 
     addPlayer(player) {
@@ -28,6 +35,12 @@ export default class Game {
         if (!obstacle.isDead()) {
             this.obstacles.push(obstacle)
         }
+    }
+
+    restart() {
+        this.score = 0
+        this.obstacles = []
+        this.start()
     }
 
     start() {
@@ -56,10 +69,14 @@ export default class Game {
 
     run() {
         this.id = window.requestAnimationFrame(() => this.run())
+        log('running')
         if (this.status === GAME_STATUS.RUNNING) {
             this.generateObstacle()
             this.update()
             this.render()
+        }
+        else if (this.status === GAME_STATUS.DEAD) {
+            window.cancelAnimationFrame(this.id)
         }
     }
     update() {

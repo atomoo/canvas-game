@@ -1,4 +1,4 @@
-import { PLAYER_STATUS } from '../constant/constant'
+import { PLAYER_STATUS, GAME_STATUS } from '../constant/constant'
 import Point from '../shape/point'
 import Polygon from '../shape/polygon'
 
@@ -17,7 +17,9 @@ export default class Player {
         this.speedVelocity = 1
         this.status = PLAYER_STATUS.SLIDING
         game.registerAction('Space', () => {
-            this.jump()
+            if (this.game.status === GAME_STATUS.RUNNING) {
+                this.jump()
+            }
         })
     }
 
